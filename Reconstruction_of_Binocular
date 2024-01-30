@@ -1,0 +1,56 @@
+import cv2
+import os
+
+# Capture video from the webcam
+cap = cv2.VideoCapture('invivo4.avi')
+#cap = cv2.VideoCapture('resection.avi')
+
+while True:
+    # Read a frame from the video stream
+    ret, frame = cap.read()
+
+    # If the frame was not read successfully, break the loop
+    if not ret:
+        break
+
+    # Crop a region of interest (ROI) from the frame
+    #Frame[verticalcoverage, horizontalcoverage]
+    #LEFT VIEW
+    roi_left = frame[0:2000, 0:1000]
+    #RIGHT VIEW
+    roi_right = frame[0:2000, 1000:2000]
+
+    # Resize the ROI to a specific size (e.g., 200x200)
+    roi_left = cv2.resize(roi_left, (900, 500))
+    roi_right = cv2.resize(roi_right, (1350, 750))
+    #could be 900, 500 for smaller size and 1800, 1000 for bigger size
+    
+    # # Merge the resized ROI back into the frame
+    # frame = merge_roi(frame, roi_resized, 0, 0)
+
+    # Display the merged frame
+    switch = 'R'
+    if(switch == 'L'):
+        cv2.imshow("Left Video", roi_left)
+    else:
+         cv2.imshow("Right Video", roi_right)
+
+    # Check for the 'q' key press to exit the loop
+    # CONTROL SPEED OF VIDEO FROM waitkey : 1 is Normal speed, 100 is very slow
+    if cv2.waitKey(30) & 0xFF == ord('q'):
+        break
+
+    
+    # height, width, layers = frame.shape
+        
+    # size = (width, height)
+
+    # video_name = 'reconstruct.avi'
+    # video = cv2.VideoWriter(video_name, 0, 29, size) 
+        
+
+
+# Release the video capture and close the display window
+# video.release()
+cap.release()
+cv2.destroyAllWindows()
